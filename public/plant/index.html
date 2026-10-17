@@ -25,20 +25,22 @@
 
   <div class="two">
     <div>
-      <img class="product" src="/assets/plant/hero.png" alt="PlantSense hero" />
+      <img class="product" src="/assets/plant/hero.png" alt="PlantSense hero — capsule head, teal ring, flat stem, 3 oval sensors" />
+      <p class="muted" style="margin-top:8px">Target look: capsule head · teal neck ring · flat-face stem · 3 oval sensors · conical tip</p>
     </div>
     <aside class="toc card" style="padding:16px">
       <strong>On this page</strong>
       <a href="#what">What it does</a>
+      <a href="#sizes">Sizes S / M / L</a>
+      <a href="#cad">CAD that matches the photo</a>
       <a href="#how">How it works</a>
-      <a href="#templates">3 templates</a>
       <a href="#bom">Materials &amp; BOM</a>
       <a href="#software">Software</a>
       <a href="#build">Step-by-step home build</a>
       <a href="#test">Test protocol</a>
       <a href="#patent">Patent pack</a>
       <a href="#market">Market &amp; sell</a>
-      <a href="#files">CAD / downloads</a>
+      <a href="#files">Downloads</a>
     </aside>
   </div>
 
@@ -52,77 +54,126 @@
     </ul>
   </section>
 
+  <section class="section" id="sizes">
+    <h2>Three sizes — pick by pot</h2>
+    <p>Same capsule head (electronics). Stem length and sensor spacing scale so the three ovals sit in the soil thirds for that pot.</p>
+    <div class="grid3">
+      <div class="card">
+        <img src="/assets/plant/cad/probe_S.png" alt="PlantSense Small CAD" style="aspect-ratio:3/4;object-fit:contain;background:#f4f4f4;padding:12px" />
+        <div class="body">
+          <h2>Small</h2>
+          <p>4–5″ pots · bury 95 mm · total ~154 mm</p>
+          <a class="btn" href="/downloads/plant-sense/plant_sense_S.stl">Download S STL</a>
+          <a class="btn secondary" href="/downloads/plant-sense/plant_sense_S_print.stl">Print plate</a>
+        </div>
+      </div>
+      <div class="card">
+        <img src="/assets/plant/cad/probe_M.png" alt="PlantSense Medium CAD" style="aspect-ratio:3/4;object-fit:contain;background:#f4f4f4;padding:12px" />
+        <div class="body">
+          <h2>Medium <span class="pill">hero</span></h2>
+          <p>6–7″ pots · bury 140 mm · total ~199 mm</p>
+          <a class="btn" href="/downloads/plant-sense/plant_sense_M.stl">Download M STL</a>
+          <a class="btn secondary" href="/downloads/plant-sense/plant_sense_M_print.stl">Print plate</a>
+        </div>
+      </div>
+      <div class="card">
+        <img src="/assets/plant/cad/probe_L.png" alt="PlantSense Large CAD" style="aspect-ratio:3/4;object-fit:contain;background:#f4f4f4;padding:12px" />
+        <div class="body">
+          <h2>Large</h2>
+          <p>8–12″ pots · bury 195 mm · total ~254 mm</p>
+          <a class="btn" href="/downloads/plant-sense/plant_sense_L.stl">Download L STL</a>
+          <a class="btn secondary" href="/downloads/plant-sense/plant_sense_L_print.stl">Print plate</a>
+        </div>
+      </div>
+    </div>
+    <table>
+      <tr><th>Size</th><th>Pot</th><th>Bury (soil)</th><th>Total</th><th>Sensors</th></tr>
+      <tr><td><strong>S</strong></td><td>4–5″ / desk plants</td><td>95 mm</td><td>~154 mm</td><td>3 ovals spaced on short stem</td></tr>
+      <tr><td><strong>M</strong></td><td>6–7″ / most houseplants</td><td>140 mm</td><td>~199 mm</td><td>Hero photo proportions</td></tr>
+      <tr><td><strong>L</strong></td><td>8–12″ / floor planters</td><td>195 mm</td><td>~254 mm</td><td>Deep thirds for tall pots</td></tr>
+    </table>
+  </section>
+
+  <section class="section" id="cad">
+    <h2>CAD that matches the photo</h2>
+    <div class="two">
+      <div>
+        <img class="product" src="/assets/plant/cad/probe_M_angle.png" alt="CAD Medium angled — matches hero geometry" style="background:#f4f4f4;object-fit:contain" />
+      </div>
+      <div>
+        <p>The printable model is <code>plant_sense_probe.scad</code> — not the old rectangular stake sketch.</p>
+        <ul>
+          <li>Capsule head with USB-C on the upper front face</li>
+          <li>Teal accent ring at the neck (print in teal filament)</li>
+          <li>Flat-face stem with rounded sides</li>
+          <li>Three recessed oval sensor windows (top / mid / bot)</li>
+          <li>Conical soil tip + hollow wire channel into the head</li>
+        </ul>
+        <p><a href="/products/plant-sense/cad/plant_sense_probe.scad">Open source .scad</a> · <a href="/products/plant-sense/cad/README.md">CAD README</a></p>
+        <pre style="background:var(--panel);padding:12px;border-radius:8px;overflow:auto;font-size:.85rem">openscad -D 'SIZE="M"' -D 'PART="assembled"' \
+  -o plant_sense_M.stl plant_sense_probe.scad
+
+# Parts for multi-color:
+# PART = head | ring | stem | lid | print_plate</pre>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="how">
     <h2>How it works (system)</h2>
     <ol>
-      <li>Three capacitive (or resistive DIY) sensing pads spaced along a stake / ring / mat.</li>
-      <li>MCU (ESP32-C3) samples ADC, filters noise, estimates volumetric moisture proxy.</li>
-      <li>BLE/Wi‑Fi sends readings to phone app every N seconds.</li>
-      <li>App runs on-device or cloud plant ID from a photo (start with a known plant list + PlantNet/Pl@ntNet-style API or TensorFlow Lite model).</li>
-      <li>Rules engine merges species watering profile + 3-zone state → action card.</li>
+      <li>Three capacitive sensing pads seated in the oval windows along the stem.</li>
+      <li>MCU (ESP32-C3) in the capsule head samples ADC, filters noise, estimates moisture proxy.</li>
+      <li>BLE/Wi‑Fi sends readings to the phone app every N seconds.</li>
+      <li>App runs plant ID from a photo, then merges species profile + 3-zone state → action card.</li>
     </ol>
-    <div class="callout">Do <strong>not</strong> use bare copper resistive probes for long-term — they corrode and poison soil. Prefer capacitive sensors with conformal coating / food-safe epoxy.</div>
-  </section>
-
-  <section class="section" id="templates">
-    <h2>Three full templates</h2>
-    <table>
-      <tr><th>Template</th><th>Form</th><th>Best for</th><th>Home difficulty</th><th>Target sell</th></tr>
-      <tr><td><strong>A — Probe Stake</strong></td><td>Slim stake, 3 pads vertical</td><td>Houseplants in pots 6–12"</td><td>Medium</td><td>$39–59</td></tr>
-      <tr><td><strong>B — Ring Sensor</strong></td><td>Silicone ring around root ball with 3 pads</td><td>Repotting / nursery</td><td>Medium-Hard</td><td>$49–69</td></tr>
-      <tr><td><strong>C — Smart Pot Mat</strong></td><td>Under-pot mat + optional spike</td><td>Saucers / passive watering</td><td>Easier electronics</td><td>$29–45</td></tr>
-    </table>
-    <p class="muted">CAD for each: <code>/products/plant-sense/templates/</code> and <code>/products/plant-sense/cad/</code></p>
+    <div class="callout">Do <strong>not</strong> use bare copper resistive probes long-term — they corrode and poison soil. Prefer capacitive sensors with conformal coating / food-safe epoxy.</div>
   </section>
 
   <section class="section" id="bom">
-    <h2>Materials &amp; exact BOM (Template A — build this first)</h2>
+    <h2>Materials &amp; exact BOM</h2>
     <table>
       <tr><th>Item</th><th>Spec</th><th>Qty</th><th>Est. USD</th><th>Where</th></tr>
       <tr><td>ESP32-C3 SuperMini / DevKit</td><td>USB-C, Wi‑Fi + BLE</td><td>1</td><td>4–7</td><td>Amazon / AliExpress / DigiKey</td></tr>
-      <tr><td>Capacitive soil modules</td><td>v1.2 analog, cut traces for custom pads OR bare capacitive front-end IC (FDC1004)</td><td>3</td><td>6–18</td><td>Amazon / DigiKey</td></tr>
+      <tr><td>Capacitive soil pads</td><td>v1.2 analog modules trimmed to oval windows, or FDC1004 front-end</td><td>3</td><td>6–18</td><td>Amazon / DigiKey</td></tr>
       <tr><td>Lipo 3.7V 600–1000mAh</td><td>with protection</td><td>1</td><td>5–9</td><td>Adafruit / Amazon</td></tr>
       <tr><td>TP4056 USB charge board</td><td>with protection preferred</td><td>1</td><td>1–2</td><td>Amazon</td></tr>
-      <tr><td>3D filament PETG or ASA</td><td>~80g</td><td>1</td><td>2–4</td><td>Local / Amazon</td></tr>
+      <tr><td>PETG filament (dark charcoal)</td><td>body / head / stem</td><td>~80g</td><td>2–4</td><td>Local / Amazon</td></tr>
+      <tr><td>PETG filament (teal)</td><td>accent ring only</td><td>~5g</td><td>1</td><td>Local / Amazon</td></tr>
       <tr><td>Food-safe / electronics epoxy</td><td>MG Chemicals or similar</td><td>1</td><td>12–20</td><td>DigiKey</td></tr>
       <tr><td>Silicone conformal coat</td><td>aerosol</td><td>1</td><td>8–15</td><td>DigiKey</td></tr>
       <tr><td>Wire 28–26 AWG silicone</td><td>1m</td><td>1</td><td>3</td><td>Amazon</td></tr>
-      <tr><td>M2 screws + heat-set inserts</td><td>McMaster-style</td><td>8</td><td>3</td><td>McMaster / Amazon</td></tr>
-      <tr><td>Calibration soils / distilled water</td><td>for tests</td><td>—</td><td>5</td><td>Hardware store</td></tr>
+      <tr><td>CA / epoxy for ring + lid</td><td>assembly</td><td>1</td><td>3</td><td>Hardware store</td></tr>
     </table>
-    <p><strong>Prototype budget:</strong> ~$55–110 materials + printer time. Soft tool later $2–5k if you injection-mold the stake.</p>
-    <h3>Tools</h3>
-    <p>3D printer (or print farm), soldering iron, multimeter, flush cutters, sandpaper 220/400, USB microscope optional, phone for app.</p>
+    <p><strong>Prototype budget:</strong> ~$55–110 materials + printer time.</p>
   </section>
 
   <section class="section" id="software">
     <h2>Software to install</h2>
     <table>
-      <tr><th>Software</th><th>Why</th><th>Link type</th></tr>
-      <tr><td>Arduino IDE 2.x <em>or</em> PlatformIO (VS Code)</td><td>ESP32 firmware</td><td>Free</td></tr>
-      <tr><td>OpenSCAD</td><td>Edit / export STL from CAD</td><td>Free</td></tr>
-      <tr><td>PrusaSlicer / Cura / Bambu Studio</td><td>Slice stake housing</td><td>Free</td></tr>
-      <tr><td>Node.js 20+</td><td>Optional local app API</td><td>Free</td></tr>
-      <tr><td>Flutter <em>or</em> React Native Expo</td><td>Phone app (camera + BLE)</td><td>Free</td></tr>
-      <tr><td>TensorFlow Lite / MediaPipe</td><td>On-device plant classify (start simple)</td><td>Free</td></tr>
-      <tr><td>Optional: Plant.id / Pl@ntNet API</td><td>Better ID while you train</td><td>Paid tiers</td></tr>
+      <tr><th>Software</th><th>Why</th></tr>
+      <tr><td>OpenSCAD</td><td>Edit SIZE / PART, re-export STL</td></tr>
+      <tr><td>PrusaSlicer / Cura / Bambu Studio</td><td>Slice STLs</td></tr>
+      <tr><td>Arduino IDE 2.x or PlatformIO</td><td>ESP32 firmware</td></tr>
+      <tr><td>Flutter or React Native Expo</td><td>Phone app (camera + BLE)</td></tr>
     </table>
-    <p>Starter firmware path: <code>/products/plant-sense/software/firmware_plant_sense/</code></p>
+    <p>Firmware: <code>/products/plant-sense/software/firmware_plant_sense/</code></p>
   </section>
 
   <section class="section" id="build">
-    <h2>Step-by-step home build (Template A)</h2>
+    <h2>Step-by-step home build</h2>
     <ol class="steps">
-      <li><strong>Print the stake</strong> — Open <code>cad/plant_sense_A_stake.scad</code> in OpenSCAD → F6 Render → Export STL. Slice in PETG, 0.2mm, 4 walls, 25% infill, upright. Print lid separately.</li>
-      <li><strong>Install heat-set inserts</strong> — M2 inserts in lid bosses with soldering iron tip (~200°C). Do not melt through walls.</li>
-      <li><strong>Prepare three sensor pads</strong> — If using modules: remove analog-out boards from cheap sticks, extend wires to pad positions at 30mm / 90mm / 150mm from tip. Or etch copper tape pads on PETG + coat.</li>
-      <li><strong>Waterproof</strong> — Conformal coat electronics; epoxy only the soil-facing pad edges. Cure 24h.</li>
-      <li><strong>Wire ESP32</strong> — Pads → ADC1 channels (use attenuator-safe pins). Battery → TP4056 → 3V3. Common ground.</li>
-      <li><strong>Flash firmware</strong> — PlatformIO: select ESP32-C3, upload <code>main.cpp</code>. Serial monitor should print Top/Mid/Bot values.</li>
-      <li><strong>Calibrate</strong> — Dry air reading = 0% proxy; soaked sponge = 100% proxy. Store in NVS.</li>
-      <li><strong>Assemble</strong> — Cable-tie battery in cavity, lid with M2 screws, leave USB access or charge pogo.</li>
-      <li><strong>App</strong> — Install Expo Go test app or build APK. Pair BLE, take plant photo, confirm recommendation card.</li>
-      <li><strong>Document PoC</strong> — Photo of device in soil + phone screenshot. This is your Kickstarter / patent appendix evidence.</li>
+      <li><strong>Pick your size</strong> — S / M / L from the chart above based on pot depth.</li>
+      <li><strong>Get the STL</strong> — Download the matching <code>plant_sense_X.stl</code>, or open <code>cad/plant_sense_probe.scad</code>, set <code>SIZE</code>, Render (F6), Export STL. For teal ring: export <code>PART="ring"</code> separately (or use the print-plate STL and paint/swap filament).</li>
+      <li><strong>Slice &amp; print</strong> — PETG, 0.2 mm, 4 walls, 25% infill. Stem upright. Head upright on its base. Ring flat on the bed in teal.</li>
+      <li><strong>Prep sensors</strong> — Trim three capacitive pads to fit the oval windows. Extend silicone wires long enough to reach the head cavity through the hollow stem.</li>
+      <li><strong>Seat pads</strong> — Press pads into the three ovals (bot / mid / top). Epoxy edges only; leave sensing face clean. Cure 24h.</li>
+      <li><strong>Pull wires</strong> — Feed wires up the hollow channel, out the tenon into the head.</li>
+      <li><strong>Slide teal ring</strong> — Onto the stem tenon until it seats under the head socket.</li>
+      <li><strong>Wire ESP32</strong> — Pads → ADC pins. Battery → TP4056 → 3V3. USB-C on the board aligns with the head cutout.</li>
+      <li><strong>Close head</strong> — Seat head on tenon (CA or press fit). Snap/glue rear lid. Leave USB accessible.</li>
+      <li><strong>Flash &amp; calibrate</strong> — Upload firmware. Dry air = 0% proxy; soaked sponge = 100%. Store in NVS.</li>
+      <li><strong>App</strong> — Pair BLE, photograph plant, confirm water / feed recommendation.</li>
     </ol>
   </section>
 
@@ -130,10 +181,11 @@
     <h2>Acceptance tests</h2>
     <table>
       <tr><th>Test</th><th>Pass</th></tr>
-      <tr><td>Dry pot top wet bottom</td><td>Top under, bottom OK/over — different zone flags</td></tr>
+      <tr><td>Dry pot top, wet bottom</td><td>Top under, bottom OK/over — different zone flags</td></tr>
       <tr><td>Overwater 1 hour</td><td>All zones over-hydrated warning</td></tr>
       <tr><td>Plant photo tomato vs snake plant</td><td>Different water profiles returned</td></tr>
       <tr><td>24h battery idle BLE</td><td>&gt;18h remaining or deep-sleep working</td></tr>
+      <tr><td>Visual match</td><td>Printed unit matches hero: capsule + teal ring + flat stem + 3 ovals + tip</td></tr>
     </table>
   </section>
 
@@ -151,27 +203,27 @@
     <ul>
       <li>Meta/TikTok: “Is your plant drowning at the roots?” — show 3-zone bars.</li>
       <li>Budget first 30 days: $800–2,000 testing 3 creatives.</li>
-      <li>Influencers: houseplant TikTok (10k–100k), garden YouTube.</li>
-    </ul>
-    <h3>Corporate / wholesale outreach</h3>
-    <ul>
-      <li>Nursery chains: local independents first, then regional (call buyer / “new products”).</li>
-      <li>Smart-home: email partnership@ for Hubitat/Home Assistant community; later Matter.</li>
-      <li>Office plant services (greenery as a service companies) — fleet SKU.</li>
     </ul>
     <h3>Sell the idea vs build</h3>
     <ul>
-      <li><strong>Build PoC:</strong> 10 units, app video, provisional filed → Kickstarter or Amazon.</li>
-      <li><strong>Sell idea:</strong> one-pager + provisional assignment option to sensor brands (Xiaomi ecosystem partners, Govee, Nesting plant brands). Use NDA + term sheet template in patent folder.</li>
+      <li><strong>Build PoC:</strong> 10 units across S/M/L, app video, provisional filed → Kickstarter or Amazon.</li>
+      <li><strong>Sell idea:</strong> one-pager + provisional assignment option to sensor brands. Use NDA + term sheet in patent folder.</li>
     </ul>
   </section>
 
   <section class="section" id="files">
-    <h2>Files</h2>
+    <h2>Downloads</h2>
+    <h3>Ready-to-print STLs</h3>
     <ul>
-      <li><a href="/products/plant-sense/cad/plant_sense_A_stake.scad">CAD Template A</a></li>
-      <li><a href="/products/plant-sense/cad/plant_sense_B_ring.scad">CAD Template B</a></li>
-      <li><a href="/products/plant-sense/cad/plant_sense_C_mat.scad">CAD Template C</a></li>
+      <li><a href="/downloads/plant-sense/plant_sense_S.stl">Small assembled</a> · <a href="/downloads/plant-sense/plant_sense_S_print.stl">Small print plate</a></li>
+      <li><a href="/downloads/plant-sense/plant_sense_M.stl">Medium assembled</a> · <a href="/downloads/plant-sense/plant_sense_M_print.stl">Medium print plate</a></li>
+      <li><a href="/downloads/plant-sense/plant_sense_L.stl">Large assembled</a> · <a href="/downloads/plant-sense/plant_sense_L_print.stl">Large print plate</a></li>
+      <li>Multi-color parts (M): <a href="/downloads/plant-sense/plant_sense_M_stem.stl">stem</a> · <a href="/downloads/plant-sense/plant_sense_M_head.stl">head</a> · <a href="/downloads/plant-sense/plant_sense_M_lid.stl">lid</a> · <a href="/downloads/plant-sense/plant_sense_M_ring.stl">teal ring</a></li>
+    </ul>
+    <h3>Source &amp; docs</h3>
+    <ul>
+      <li><a href="/products/plant-sense/cad/plant_sense_probe.scad">plant_sense_probe.scad</a></li>
+      <li><a href="/products/plant-sense/cad/README.md">CAD README</a></li>
       <li><a href="/products/plant-sense/bom/BOM.csv">BOM CSV</a></li>
       <li><a href="/products/plant-sense/docs/BUILD_GUIDE.md">BUILD_GUIDE.md</a></li>
     </ul>
