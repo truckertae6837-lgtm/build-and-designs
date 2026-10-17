@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PlantSense — Full Build Kit</title>
+  <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="/">Build &amp; Designs</a>
+  <nav>
+    <a href="/plant/">PlantSense</a>
+    <a href="/ladder/">LadderLevel</a>
+    <a href="/shopguard/">ShopGuard</a>
+    <a href="/downloads.html">Downloads</a>
+  </nav>
+</div></header>
+<main class="wrap">
+  <section class="hero" style="border:0;padding-top:36px">
+    <p class="pill">Product 1 of 3</p>
+    <h1>PlantSense</h1>
+    <p>Three-depth soil hydration probe + phone app that photographs the plant, identifies it, and recommends water, fertilizer, or both.</p>
+  </section>
+
+  <div class="two">
+    <div>
+      <img class="product" src="/assets/plant/hero.png" alt="PlantSense hero" />
+    </div>
+    <aside class="toc card" style="padding:16px">
+      <strong>On this page</strong>
+      <a href="#what">What it does</a>
+      <a href="#how">How it works</a>
+      <a href="#templates">3 templates</a>
+      <a href="#bom">Materials &amp; BOM</a>
+      <a href="#software">Software</a>
+      <a href="#build">Step-by-step home build</a>
+      <a href="#test">Test protocol</a>
+      <a href="#patent">Patent pack</a>
+      <a href="#market">Market &amp; sell</a>
+      <a href="#files">CAD / downloads</a>
+    </aside>
+  </div>
+
+  <section class="section" id="what">
+    <h2>What it does</h2>
+    <ul>
+      <li>Reads soil moisture at <strong>bottom, middle, and top</strong> zones of the pot/root ball.</li>
+      <li>Classifies <strong>under-hydrated / OK / over-hydrated</strong> per zone and overall.</li>
+      <li>App camera: identify plant species/cultivar class, then recommend <strong>water, nutrients/food, or both</strong>.</li>
+      <li>Push/local alerts when a zone stays dry or waterlogged beyond thresholds.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="how">
+    <h2>How it works (system)</h2>
+    <ol>
+      <li>Three capacitive (or resistive DIY) sensing pads spaced along a stake / ring / mat.</li>
+      <li>MCU (ESP32-C3) samples ADC, filters noise, estimates volumetric moisture proxy.</li>
+      <li>BLE/Wi‑Fi sends readings to phone app every N seconds.</li>
+      <li>App runs on-device or cloud plant ID from a photo (start with a known plant list + PlantNet/Pl@ntNet-style API or TensorFlow Lite model).</li>
+      <li>Rules engine merges species watering profile + 3-zone state → action card.</li>
+    </ol>
+    <div class="callout">Do <strong>not</strong> use bare copper resistive probes for long-term — they corrode and poison soil. Prefer capacitive sensors with conformal coating / food-safe epoxy.</div>
+  </section>
+
+  <section class="section" id="templates">
+    <h2>Three full templates</h2>
+    <table>
+      <tr><th>Template</th><th>Form</th><th>Best for</th><th>Home difficulty</th><th>Target sell</th></tr>
+      <tr><td><strong>A — Probe Stake</strong></td><td>Slim stake, 3 pads vertical</td><td>Houseplants in pots 6–12"</td><td>Medium</td><td>$39–59</td></tr>
+      <tr><td><strong>B — Ring Sensor</strong></td><td>Silicone ring around root ball with 3 pads</td><td>Repotting / nursery</td><td>Medium-Hard</td><td>$49–69</td></tr>
+      <tr><td><strong>C — Smart Pot Mat</strong></td><td>Under-pot mat + optional spike</td><td>Saucers / passive watering</td><td>Easier electronics</td><td>$29–45</td></tr>
+    </table>
+    <p class="muted">CAD for each: <code>/products/plant-sense/templates/</code> and <code>/products/plant-sense/cad/</code></p>
+  </section>
+
+  <section class="section" id="bom">
+    <h2>Materials &amp; exact BOM (Template A — build this first)</h2>
+    <table>
+      <tr><th>Item</th><th>Spec</th><th>Qty</th><th>Est. USD</th><th>Where</th></tr>
+      <tr><td>ESP32-C3 SuperMini / DevKit</td><td>USB-C, Wi‑Fi + BLE</td><td>1</td><td>4–7</td><td>Amazon / AliExpress / DigiKey</td></tr>
+      <tr><td>Capacitive soil modules</td><td>v1.2 analog, cut traces for custom pads OR bare capacitive front-end IC (FDC1004)</td><td>3</td><td>6–18</td><td>Amazon / DigiKey</td></tr>
+      <tr><td>Lipo 3.7V 600–1000mAh</td><td>with protection</td><td>1</td><td>5–9</td><td>Adafruit / Amazon</td></tr>
+      <tr><td>TP4056 USB charge board</td><td>with protection preferred</td><td>1</td><td>1–2</td><td>Amazon</td></tr>
+      <tr><td>3D filament PETG or ASA</td><td>~80g</td><td>1</td><td>2–4</td><td>Local / Amazon</td></tr>
+      <tr><td>Food-safe / electronics epoxy</td><td>MG Chemicals or similar</td><td>1</td><td>12–20</td><td>DigiKey</td></tr>
+      <tr><td>Silicone conformal coat</td><td>aerosol</td><td>1</td><td>8–15</td><td>DigiKey</td></tr>
+      <tr><td>Wire 28–26 AWG silicone</td><td>1m</td><td>1</td><td>3</td><td>Amazon</td></tr>
+      <tr><td>M2 screws + heat-set inserts</td><td>McMaster-style</td><td>8</td><td>3</td><td>McMaster / Amazon</td></tr>
+      <tr><td>Calibration soils / distilled water</td><td>for tests</td><td>—</td><td>5</td><td>Hardware store</td></tr>
+    </table>
+    <p><strong>Prototype budget:</strong> ~$55–110 materials + printer time. Soft tool later $2–5k if you injection-mold the stake.</p>
+    <h3>Tools</h3>
+    <p>3D printer (or print farm), soldering iron, multimeter, flush cutters, sandpaper 220/400, USB microscope optional, phone for app.</p>
+  </section>
+
+  <section class="section" id="software">
+    <h2>Software to install</h2>
+    <table>
+      <tr><th>Software</th><th>Why</th><th>Link type</th></tr>
+      <tr><td>Arduino IDE 2.x <em>or</em> PlatformIO (VS Code)</td><td>ESP32 firmware</td><td>Free</td></tr>
+      <tr><td>OpenSCAD</td><td>Edit / export STL from CAD</td><td>Free</td></tr>
+      <tr><td>PrusaSlicer / Cura / Bambu Studio</td><td>Slice stake housing</td><td>Free</td></tr>
+      <tr><td>Node.js 20+</td><td>Optional local app API</td><td>Free</td></tr>
+      <tr><td>Flutter <em>or</em> React Native Expo</td><td>Phone app (camera + BLE)</td><td>Free</td></tr>
+      <tr><td>TensorFlow Lite / MediaPipe</td><td>On-device plant classify (start simple)</td><td>Free</td></tr>
+      <tr><td>Optional: Plant.id / Pl@ntNet API</td><td>Better ID while you train</td><td>Paid tiers</td></tr>
+    </table>
+    <p>Starter firmware path: <code>/products/plant-sense/software/firmware_plant_sense/</code></p>
+  </section>
+
+  <section class="section" id="build">
+    <h2>Step-by-step home build (Template A)</h2>
+    <ol class="steps">
+      <li><strong>Print the stake</strong> — Open <code>cad/plant_sense_A_stake.scad</code> in OpenSCAD → F6 Render → Export STL. Slice in PETG, 0.2mm, 4 walls, 25% infill, upright. Print lid separately.</li>
+      <li><strong>Install heat-set inserts</strong> — M2 inserts in lid bosses with soldering iron tip (~200°C). Do not melt through walls.</li>
+      <li><strong>Prepare three sensor pads</strong> — If using modules: remove analog-out boards from cheap sticks, extend wires to pad positions at 30mm / 90mm / 150mm from tip. Or etch copper tape pads on PETG + coat.</li>
+      <li><strong>Waterproof</strong> — Conformal coat electronics; epoxy only the soil-facing pad edges. Cure 24h.</li>
+      <li><strong>Wire ESP32</strong> — Pads → ADC1 channels (use attenuator-safe pins). Battery → TP4056 → 3V3. Common ground.</li>
+      <li><strong>Flash firmware</strong> — PlatformIO: select ESP32-C3, upload <code>main.cpp</code>. Serial monitor should print Top/Mid/Bot values.</li>
+      <li><strong>Calibrate</strong> — Dry air reading = 0% proxy; soaked sponge = 100% proxy. Store in NVS.</li>
+      <li><strong>Assemble</strong> — Cable-tie battery in cavity, lid with M2 screws, leave USB access or charge pogo.</li>
+      <li><strong>App</strong> — Install Expo Go test app or build APK. Pair BLE, take plant photo, confirm recommendation card.</li>
+      <li><strong>Document PoC</strong> — Photo of device in soil + phone screenshot. This is your Kickstarter / patent appendix evidence.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="test">
+    <h2>Acceptance tests</h2>
+    <table>
+      <tr><th>Test</th><th>Pass</th></tr>
+      <tr><td>Dry pot top wet bottom</td><td>Top under, bottom OK/over — different zone flags</td></tr>
+      <tr><td>Overwater 1 hour</td><td>All zones over-hydrated warning</td></tr>
+      <tr><td>Plant photo tomato vs snake plant</td><td>Different water profiles returned</td></tr>
+      <tr><td>24h battery idle BLE</td><td>&gt;18h remaining or deep-sleep working</td></tr>
+    </table>
+  </section>
+
+  <section class="section" id="patent">
+    <h2>Patent / IP pack</h2>
+    <p>Full inventor disclosure: <a href="/products/plant-sense/patent/INVENTOR_DISCLOSURE.md">INVENTOR_DISCLOSURE.md</a></p>
+    <p>Claim outline + drawing list: <a href="/products/plant-sense/patent/CLAIMS_AND_DRAWINGS.md">CLAIMS_AND_DRAWINGS.md</a></p>
+    <p>Provisional filing checklist: <a href="/products/plant-sense/patent/PROVISIONAL_CHECKLIST.md">PROVISIONAL_CHECKLIST.md</a></p>
+    <div class="callout">File a US provisional <em>before</em> public Kickstarter if you want inexpensive priority. Then you have 12 months to non-provisional / PCT.</div>
+  </section>
+
+  <section class="section" id="market">
+    <h2>Market, advertise, who to contact</h2>
+    <h3>Direct-to-consumer ads</h3>
+    <ul>
+      <li>Meta/TikTok: “Is your plant drowning at the roots?” — show 3-zone bars.</li>
+      <li>Budget first 30 days: $800–2,000 testing 3 creatives.</li>
+      <li>Influencers: houseplant TikTok (10k–100k), garden YouTube.</li>
+    </ul>
+    <h3>Corporate / wholesale outreach</h3>
+    <ul>
+      <li>Nursery chains: local independents first, then regional (call buyer / “new products”).</li>
+      <li>Smart-home: email partnership@ for Hubitat/Home Assistant community; later Matter.</li>
+      <li>Office plant services (greenery as a service companies) — fleet SKU.</li>
+    </ul>
+    <h3>Sell the idea vs build</h3>
+    <ul>
+      <li><strong>Build PoC:</strong> 10 units, app video, provisional filed → Kickstarter or Amazon.</li>
+      <li><strong>Sell idea:</strong> one-pager + provisional assignment option to sensor brands (Xiaomi ecosystem partners, Govee, Nesting plant brands). Use NDA + term sheet template in patent folder.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="files">
+    <h2>Files</h2>
+    <ul>
+      <li><a href="/products/plant-sense/cad/plant_sense_A_stake.scad">CAD Template A</a></li>
+      <li><a href="/products/plant-sense/cad/plant_sense_B_ring.scad">CAD Template B</a></li>
+      <li><a href="/products/plant-sense/cad/plant_sense_C_mat.scad">CAD Template C</a></li>
+      <li><a href="/products/plant-sense/bom/BOM.csv">BOM CSV</a></li>
+      <li><a href="/products/plant-sense/docs/BUILD_GUIDE.md">BUILD_GUIDE.md</a></li>
+    </ul>
+  </section>
+</main>
+<footer class="wrap">PlantSense · Build &amp; Designs</footer>
+</body>
+</html>

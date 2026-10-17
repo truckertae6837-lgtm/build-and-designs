@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ShopGuard — Full Build Kit</title>
+  <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="/">Build &amp; Designs</a>
+  <nav>
+    <a href="/plant/">PlantSense</a>
+    <a href="/ladder/">LadderLevel</a>
+    <a href="/shopguard/">ShopGuard</a>
+    <a href="/downloads.html">Downloads</a>
+  </nav>
+</div></header>
+<main class="wrap">
+  <section class="hero" style="border:0;padding-top:36px">
+    <p class="pill">Product 3 of 3 · wearable safety alert</p>
+    <h1>ShopGuard</h1>
+    <p>Solo-worker wearable that detects falls and prolonged no-motion (possible loss of consciousness), sounds a local alarm, and notifies your circle. Large <strong>push for SOS</strong>. <strong>Push to cancel</strong> during countdown.</p>
+  </section>
+
+  <div class="two">
+    <img class="product" src="/assets/shopguard/hero.png" alt="ShopGuard" />
+    <aside class="card" style="padding:16px">
+      <strong>On this page</strong>
+      <div class="toc">
+        <a href="#ux">UX / controls</a>
+        <a href="#how">How detection works</a>
+        <a href="#templates">3 templates</a>
+        <a href="#bom">BOM</a>
+        <a href="#build">Build steps</a>
+        <a href="#fw">Firmware logic</a>
+        <a href="#patent">Patent</a>
+        <a href="#market">Market</a>
+      </div>
+    </aside>
+  </div>
+
+  <section class="section" id="ux">
+    <h2>Controls (must feel obvious with gloves)</h2>
+    <ul>
+      <li><strong>Arm / Power:</strong> slide switch or long-press.</li>
+      <li><strong>SOS (push for alarm):</strong> large recessed button or side slider — starts immediate siren + alert.</li>
+      <li><strong>Cancel:</strong> same button short-press during 15–30s countdown after auto-detect, or dedicated cancel.</li>
+      <li>LED: green armed · amber countdown · red alarming.</li>
+      <li>No mandatory subscription — SMS via phone BLE bridge or optional LTE SKU later.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="how">
+    <h2>How it detects “fell / not conscious”</h2>
+    <ol>
+      <li>IMU (MPU6050 / BMI160) samples accel + gyro ~50–100 Hz.</li>
+      <li><strong>Fall heuristic:</strong> free-fall-like low-g → high impact → stillness.</li>
+      <li><strong>No-motion:</strong> while armed, motion energy below threshold for N minutes (configurable 2–10).</li>
+      <li>Enter <strong>countdown</strong> with beep; user cancels if OK.</li>
+      <li>If not cancelled: local 95–105 dB siren + notify contacts via phone app.</li>
+    </ol>
+    <div class="callout">Market as a <strong>personal alert aid</strong>, not a certified medical/life-safety device, until you complete UL/IEC and clinical validation.</div>
+  </section>
+
+  <section class="section" id="templates">
+    <h2>Three templates</h2>
+    <table>
+      <tr><th>Template</th><th>Mount</th><th>Notes</th><th>Sell</th></tr>
+      <tr><td><strong>A Belt Clip</strong></td><td>Pocket / belt</td><td>Fastest home build</td><td>$59–79</td></tr>
+      <tr><td><strong>B Wristband</strong></td><td>Watch-like</td><td>Better continuous wear</td><td>$79–99</td></tr>
+      <tr><td><strong>C Hardhat Clip</strong></td><td>Helmet brim</td><td>Jobsite / makerspace</td><td>$69–89</td></tr>
+    </table>
+  </section>
+
+  <section class="section" id="bom">
+    <h2>BOM — Template A</h2>
+    <table>
+      <tr><th>Part</th><th>Spec</th><th>Qty</th><th>USD</th></tr>
+      <tr><td>ESP32-C3 or nRF52840</td><td>BLE</td><td>1</td><td>3–8</td></tr>
+      <tr><td>MPU6050 / BMI160 breakout</td><td>IMU</td><td>1</td><td>2–5</td></tr>
+      <tr><td>Active piezo + driver</td><td>≥95 dB @10cm</td><td>1</td><td>2–4</td></tr>
+      <tr><td>Large tactile / slider</td><td>glove friendly</td><td>1–2</td><td>1–3</td></tr>
+      <tr><td>LED 5mm or WS2812</td><td>status</td><td>1</td><td>0.5</td></tr>
+      <tr><td>LiPo 400–600 mAh + TP4056</td><td>power</td><td>1</td><td>5–8</td></tr>
+      <tr><td>PETG enclosure print</td><td>cad A</td><td>1</td><td>2</td></tr>
+      <tr><td>Belt clip spring steel / print</td><td>—</td><td>1</td><td>1–3</td></tr>
+    </table>
+    <p><strong>Proto:</strong> $25–55. App: Expo/Flutter free tooling.</p>
+  </section>
+
+  <section class="section" id="build">
+    <h2>Step-by-step home build</h2>
+    <ol class="steps">
+      <li>Print <code>shopguard_A_clip.scad</code> parts (body, lid, clip, button cap).</li>
+      <li>Heat-set M2 inserts; dry-fit IMU + MCU + battery.</li>
+      <li>Solder: IMU I²C → ESP32; piezo via transistor; buttons to GPIOs with pull-ups; LED.</li>
+      <li>Flash firmware from <code>/products/shopguard/firmware/</code>.</li>
+      <li>Calibrate fall thresholds on foam mat (do not injure yourself testing).</li>
+      <li>Verify countdown cancel works with gloves on.</li>
+      <li>Pair phone app; set 2 emergency contacts; test SMS/push in controlled way.</li>
+      <li>Record demo video for PoC / patent appendix.</li>
+    </ol>
+  </section>
+
+  <section class="section" id="fw">
+    <h2>Firmware state machine</h2>
+    <pre>IDLE → ARMED → (FALL|NO_MOTION) → COUNTDOWN → ALARM
+                 ↘ CANCEL ↗                 ↘ CANCEL (if policy allows)</pre>
+    <p>Source: <a href="/products/shopguard/firmware/README.md">firmware README</a></p>
+  </section>
+
+  <section class="section" id="patent">
+    <h2>Patent pack</h2>
+    <p><a href="/products/shopguard/patent/INVENTOR_DISCLOSURE.md">Disclosure</a> ·
+       <a href="/products/shopguard/patent/CLAIMS_AND_DRAWINGS.md">Claims</a> ·
+       <a href="/products/shopguard/patent/PROVISIONAL_CHECKLIST.md">Checklist</a></p>
+    <p>Differentiate on: tradesperson form factor + glove SOS/cancel UX + no-subscription BLE bridge architecture (not just “fall detection” alone — prior art is crowded).</p>
+  </section>
+
+  <section class="section" id="market">
+    <h2>Market &amp; contacts</h2>
+    <ul>
+      <li>Makerspaces, community college shops, welding schools — bulk 10.</li>
+      <li>Small HVAC / plumbing owners (LinkedIn / local association).</li>
+      <li>Safety distributors — Grainger-type suppliers via niche brands.</li>
+      <li>Sell-idea: existing lone-worker brands (Blackline adjacent) — only with provisional + NDA.</li>
+      <li>Ads: $1–3k Meta targeting “garage workshop” interests; YouTube woodworking sponsorships.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Files</h2>
+    <ul>
+      <li><a href="/products/shopguard/cad/shopguard_A_clip.scad">CAD A</a></li>
+      <li><a href="/products/shopguard/cad/shopguard_B_wrist.scad">CAD B</a></li>
+      <li><a href="/products/shopguard/cad/shopguard_C_hardhat.scad">CAD C</a></li>
+      <li><a href="/products/shopguard/bom/BOM.csv">BOM</a></li>
+      <li><a href="/products/shopguard/docs/BUILD_GUIDE.md">BUILD_GUIDE.md</a></li>
+    </ul>
+  </section>
+</main>
+<footer class="wrap">ShopGuard · Build &amp; Designs</footer>
+</body>
+</html>

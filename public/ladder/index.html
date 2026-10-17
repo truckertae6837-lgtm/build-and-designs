@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LadderLevel — Full Build Kit</title>
+  <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="/">Build &amp; Designs</a>
+  <nav>
+    <a href="/plant/">PlantSense</a>
+    <a href="/ladder/">LadderLevel</a>
+    <a href="/shopguard/">ShopGuard</a>
+    <a href="/downloads.html">Downloads</a>
+  </nav>
+</div></header>
+<main class="wrap">
+  <section class="hero" style="border:0;padding-top:36px">
+    <p class="pill">Product 2 of 3 · mechanical first</p>
+    <h1>LadderLevel Wedge Pair</h1>
+    <p>Interlocking polymer wedges that stabilize ladder feet on slopes, gravel, lawn, and jobsite uneven ground — without stacking scrap wood.</p>
+  </section>
+
+  <div class="two">
+    <img class="product" src="/assets/ladder/hero.png" alt="LadderLevel" />
+    <aside class="card" style="padding:16px">
+      <strong>On this page</strong>
+      <div class="toc">
+        <a href="#what">What / how</a>
+        <a href="#templates">3 templates</a>
+        <a href="#bom">Materials</a>
+        <a href="#build">Home build</a>
+        <a href="#safety">Safety tests</a>
+        <a href="#patent">Patent</a>
+        <a href="#market">Market &amp; contacts</a>
+      </div>
+    </aside>
+  </div>
+
+  <section class="section" id="what">
+    <h2>What it does &amp; how</h2>
+    <p>Two matching wedges with <strong>ratchet teeth</strong> on the mating faces. Slide until the top faces are coplanar and level under each ladder foot. High-friction top pad grips the ladder shoe; bottom tread grips ground.</p>
+    <ul>
+      <li>Works as a pair — one or both sides depending on slope.</li>
+      <li>Teeth lock under load; pull-tab releases.</li>
+      <li>Bright color for visibility on site.</li>
+    </ul>
+  </section>
+
+  <section class="section" id="templates">
+    <h2>Three templates</h2>
+    <table>
+      <tr><th>Template</th><th>Size / load</th><th>Process</th><th>Sell</th></tr>
+      <tr><td><strong>A Compact</strong></td><td>Household A-frame, ≤225 lb user</td><td>3D print PETG / nylon</td><td>$24–34</td></tr>
+      <tr><td><strong>B Heavy-Duty</strong></td><td>Extension ladder, thicker wall</td><td>Print then silicone mold urethane, or CNC UHMW</td><td>$39–54</td></tr>
+      <tr><td><strong>C Pro Kit</strong></td><td>Pair + carry sling + bubble vial clip</td><td>Same as B + accessories</td><td>$59–79</td></tr>
+    </table>
+  </section>
+
+  <section class="section" id="bom">
+    <h2>Materials (Template A print-at-home)</h2>
+    <table>
+      <tr><th>Item</th><th>Spec</th><th>Qty</th><th>USD</th></tr>
+      <tr><td>PETG or PA12-CF filament</td><td>~180g for pair</td><td>1</td><td>6–12</td></tr>
+      <tr><td>TPU filament (foot pad)</td><td>95A, ~30g</td><td>1</td><td>3–5</td></tr>
+      <tr><td>CA glue + activator</td><td>pad bond</td><td>1</td><td>8</td></tr>
+      <tr><td>Optional: reflective sticker</td><td>safety</td><td>2</td><td>2</td></tr>
+      <tr><td>Digital angle gauge</td><td>validation</td><td>1</td><td>15–25</td></tr>
+    </table>
+    <p><strong>Proto budget:</strong> $30–60. <strong>Soft aluminum mold later:</strong> $1.5–4k per cavity if you scale.</p>
+    <h3>Software</h3>
+    <p>OpenSCAD, PrusaSlicer/Bambu Studio, optional Fusion 360 for STEP refine.</p>
+  </section>
+
+  <section class="section" id="build">
+    <h2>Step-by-step home build</h2>
+    <ol class="steps">
+      <li>Open <code>ladder_level_A.scad</code> → render → export <code>wedge_left.stl</code> / <code>wedge_right.stl</code> / <code>pad.stl</code>.</li>
+      <li>Slice wedges: 0.2mm, 5+ walls, 40–60% gyroid, PETG 250°C / 80–90°C bed. Print flat on largest face.</li>
+      <li>Slice TPU pads soft; glue to top recess after IPA wipe.</li>
+      <li>Deburr teeth with 220 grit — teeth must mesh without binding dry.</li>
+      <li>Functional test on 5–12° plywood ramp with ladder empty, then with 150 lb sandbag on bottom rung (controlled).</li>
+      <li>Mark max slope on product card (e.g. “≤12° residential”).</li>
+      <li>Photograph on real uneven ground for ads / patent appendix.</li>
+    </ol>
+    <div class="callout tag-warn"><strong>Safety:</strong> This is a leveling aid, not a substitute for ladder manufacturer instructions, tie-offs, or 3-point contact. Do not market as OSHA-certified until you fund independent testing.</div>
+  </section>
+
+  <section class="section" id="safety">
+    <h2>Test protocol</h2>
+    <table>
+      <tr><th>Test</th><th>Pass</th></tr>
+      <tr><td>Static sandbag 150 lb @ 8°</td><td>No slip 60s</td></tr>
+      <tr><td>Mesh teeth</td><td>Engage every 3mm step</td></tr>
+      <tr><td>Drop from 1m onto concrete</td><td>No crack (PETG/nylon)</td></tr>
+      <tr><td>Wet grass</td><td>No uncontrolled slide</td></tr>
+    </table>
+  </section>
+
+  <section class="section" id="patent">
+    <h2>Patent pack</h2>
+    <p><a href="/products/ladder-level/patent/INVENTOR_DISCLOSURE.md">Inventor disclosure</a> ·
+       <a href="/products/ladder-level/patent/CLAIMS_AND_DRAWINGS.md">Claims &amp; drawings</a> ·
+       <a href="/products/ladder-level/patent/PROVISIONAL_CHECKLIST.md">Provisional checklist</a></p>
+    <p>Key inventive angles to emphasize: interlocking ratchet geometry under ladder shoe + release pull + friction pad system as a <em>kit</em>.</p>
+  </section>
+
+  <section class="section" id="market">
+    <h2>Market &amp; who to contact</h2>
+    <ul>
+      <li><strong>DTC:</strong> Facebook/Instagram “homeowner ladder fail” ads, $500–1,500 test.</li>
+      <li><strong>Retail:</strong> independent hardware stores; email Ace/True Value new-product forms; later Home Depot buyer via distributor.</li>
+      <li><strong>Jobsite:</strong> local electrical/HVAC shops — leave sample pair.</li>
+      <li><strong>Corporate sell-idea:</strong> Little Giant / Werner / Gorilla ladder accessory teams (LinkedIn “strategic partnerships”).</li>
+      <li><strong>PoC path:</strong> print 50 pairs, sell on Etsy/Amazon Handmade, file provisional, then tool urethane cast.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>Files</h2>
+    <ul>
+      <li><a href="/products/ladder-level/cad/ladder_level_A.scad">Template A CAD</a></li>
+      <li><a href="/products/ladder-level/cad/ladder_level_B.scad">Template B CAD</a></li>
+      <li><a href="/products/ladder-level/cad/ladder_level_C_kit.scad">Template C CAD</a></li>
+      <li><a href="/products/ladder-level/bom/BOM.csv">BOM</a></li>
+      <li><a href="/products/ladder-level/docs/BUILD_GUIDE.md">BUILD_GUIDE.md</a></li>
+    </ul>
+  </section>
+</main>
+<footer class="wrap">LadderLevel · Build &amp; Designs</footer>
+</body>
+</html>
